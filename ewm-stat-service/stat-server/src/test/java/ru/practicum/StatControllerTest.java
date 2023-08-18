@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = StatController.class)
 class StatControllerTest {
-    private static final String PATH_HIT = "/hits";
+    private static final String PATH_HIT = "/hit";
     private static final String PATH_STATS = "/stats";
     private static final boolean UNIQUE_DEFAULT = false;
     private static final List<String> URIS_DEFAULT = Collections.emptyList();

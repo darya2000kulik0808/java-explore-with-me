@@ -27,7 +27,7 @@ public class StatController {
         return statService.getStats(start, end, uris, unique);
     }
 
-    @PostMapping("/hits")
+    @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
     public String postStat(@RequestBody @Valid EndpointHitDto hit) {
         log.info("Получили запрос на добавление запроса к эндпоинту: {}, - сервиса: {}", hit.uri, hit.app);
