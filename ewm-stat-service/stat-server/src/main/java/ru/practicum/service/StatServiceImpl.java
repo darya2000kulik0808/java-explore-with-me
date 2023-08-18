@@ -15,7 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -65,6 +67,9 @@ public class StatServiceImpl implements StatService {
             log.info("Сформировали статистику для периода с {} по {}, уникальные просмотры: {}",
                     startTime, endTime, unique);
         }
-        return viewStats;
+        return viewStats
+                .stream()
+                .sorted(Comparator.comparing(ViewStatsDto::getHits).reversed())
+                .collect(Collectors.toList());
     }
 }
