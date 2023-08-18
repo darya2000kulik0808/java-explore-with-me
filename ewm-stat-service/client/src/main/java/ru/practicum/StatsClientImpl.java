@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Service
 @Validated
-public class StatsClientImpl implements StatClient{
+public class StatsClientImpl implements StatClient {
     private static final String PATH_HIT = "/hit";
     private static final String PATH_STATS_WITH_DATE_PARAMS = "/stats?start={start}&end={end}";
     private static final String PARAM_UNIQUE = "&unique={unique}";
