@@ -128,6 +128,6 @@ class StatServiceTest {
         assertThat(viewStatsDTOs)
                 .isNotNull()
                 .hasSize(2)
-                .isEqualTo(List.of(viewStatsDto1, viewStatsDto2));
+                .isEqualTo(List.of(viewStatsDto2, viewStatsDto1));
     }
 }
