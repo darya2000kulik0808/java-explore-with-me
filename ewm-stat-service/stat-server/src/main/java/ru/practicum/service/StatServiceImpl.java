@@ -45,7 +45,7 @@ public class StatServiceImpl implements StatService {
         if (!uris.isEmpty()) {
             log.info("Списк URI был передан.");
             viewStats = !unique ? statsRepository.findAllByTimestampBetweenAndUriIn(startTime, endTime, uris) :
-                        statsRepository.findAllByTimestampBetweenAndUriInAndIpUnique(startTime, endTime, uris);
+                    statsRepository.findAllByTimestampBetweenAndUriInAndIpUnique(startTime, endTime, uris);
             if (viewStats.isEmpty()) {
                 log.info("Пустой отчет для периода с {} по {}. Уникальные просмотры: {}.",
                         startTime, endTime, unique);

@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.service.StatService;
 
-import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.util.List;
 
