@@ -24,12 +24,7 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.checkerframework</groupId>
-            <artifactId>checker-qual</artifactId>
-            <version>3.5.0</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
