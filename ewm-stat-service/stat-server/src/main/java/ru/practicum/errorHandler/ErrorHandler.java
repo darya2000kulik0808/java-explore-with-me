@@ -40,6 +40,17 @@ public class ErrorHandler {
                 .build();
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleStartEndTimeException(final StartTimeAndEndTimeException e) {
+        log.error(e.getMessage(), e);
+        return ErrorResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .reason("Incorrectly made request.")
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)

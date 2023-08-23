@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.ViewStatsDto;
+import ru.practicum.errorHandler.StartTimeAndEndTimeException;
 import ru.practicum.mapper.EndpointHitsMapper;
 import ru.practicum.model.EndpointHit;
 import ru.practicum.repository.StatsRepository;
@@ -46,6 +47,7 @@ public class StatServiceImpl implements StatService {
         log.info("Перешли к началу выборки статистики из БД...");
         LocalDateTime startTime = LocalDateTime.parse(URLDecoder.decode(start, StandardCharsets.UTF_8), formatter);
         LocalDateTime endTime = LocalDateTime.parse(URLDecoder.decode(end, StandardCharsets.UTF_8), formatter);
+        checkTime(startTime, endTime);
         List<ViewStatsDto> viewStats;
         if (!uris.isEmpty()) {
             log.info("Списк URI был передан.");
@@ -74,5 +76,23 @@ public class StatServiceImpl implements StatService {
                 .stream()
                 .sorted(Comparator.comparing(ViewStatsDto::getHits).reversed())
                 .collect(Collectors.toList());
+    }
+
+    private void checkTime(LocalDateTime start, LocalDateTime end) {
+        if (start.equals(end)) {
+            throw new StartTimeAndEndTimeException("Время начала не может совпадать с концом!");
+        }
+        if (start.isAfter(LocalDateTime.now())) {
+            throw new StartTimeAndEndTimeException("Время начала не может быть в будущем!");
+
+        }
+        if (end.isBefore(LocalDateTime.now())) {
+            throw new StartTimeAndEndTimeException("Время конца не может быть в прошлом!");
+
+        }
+        if (start.isAfter(end)) {
+            throw new StartTimeAndEndTimeException("Время начала не может быть позже конца!");
+
+        }
     }
 }
