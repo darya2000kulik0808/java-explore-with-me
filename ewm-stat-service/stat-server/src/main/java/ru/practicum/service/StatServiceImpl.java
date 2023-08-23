@@ -84,15 +84,9 @@ public class StatServiceImpl implements StatService {
         }
         if (start.isAfter(LocalDateTime.now())) {
             throw new StartTimeAndEndTimeException("Время начала не может быть в будущем!");
-
-        }
-        if (end.isBefore(LocalDateTime.now())) {
-            throw new StartTimeAndEndTimeException("Время конца не может быть в прошлом!");
-
         }
         if (start.isAfter(end)) {
-            throw new StartTimeAndEndTimeException("Время начала не может быть позже конца!");
-
+            throw new StartTimeAndEndTimeException("Время начала не может быть раньше конца!");
         }
     }
 }
