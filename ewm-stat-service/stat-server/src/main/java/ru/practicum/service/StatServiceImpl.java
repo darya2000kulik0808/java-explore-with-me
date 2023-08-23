@@ -3,6 +3,7 @@ package ru.practicum.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.ViewStatsDto;
 import ru.practicum.mapper.EndpointHitsMapper;
@@ -31,6 +32,7 @@ public class StatServiceImpl implements StatService {
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Transactional
     public void postStat(EndpointHitDto hit) {
         log.info("Перешли к записи запроса к эндпоинту в БД...");
         EndpointHit hit1 = statsRepository.save(EndpointHitsMapper.toEndPointHit(hit));
@@ -38,6 +40,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ViewStatsDto> getStats(String start, String end,
                                        List<String> uris, Boolean unique) {
         log.info("Перешли к началу выборки статистики из БД...");
