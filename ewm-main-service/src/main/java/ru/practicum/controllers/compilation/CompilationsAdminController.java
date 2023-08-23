@@ -23,14 +23,14 @@ public class CompilationsAdminController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto createNewCompilation(@Valid @RequestBody NewCompilationDto compilation){
+    public CompilationDto createNewCompilation(@Valid @RequestBody NewCompilationDto compilation) {
         log.info("Получили запрос на создание подборки.");
         return compilationService.createNewCompilation(compilation);
     }
 
     @PatchMapping("/{compId}")
     public CompilationDto patchCompilation(@PathVariable Long compId,
-                                @Valid @RequestBody UpdateCompilationRequest updateCompilationRequest) {
+                                           @Valid @RequestBody UpdateCompilationRequest updateCompilationRequest) {
         log.info("Получили запрос на изменение подборки.");
         return compilationService.patchCompilation(compId, updateCompilationRequest);
     }

@@ -33,10 +33,10 @@ public class UsersAdminController {
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam(defaultValue = "") List<Long> ids,
-                             @PositiveOrZero(message = FROM_ERROR_MESSAGE)
-                             @RequestParam(defaultValue = "0") Integer from,
-                             @Positive(message = SIZE_ERROR_MESSAGE)
-                             @RequestParam(defaultValue = "10") Integer size) {
+                                  @PositiveOrZero(message = FROM_ERROR_MESSAGE)
+                                  @RequestParam(defaultValue = "0") Integer from,
+                                  @Positive(message = SIZE_ERROR_MESSAGE)
+                                  @RequestParam(defaultValue = "10") Integer size) {
         return service.getUsers(ids, from, size);
     }
 

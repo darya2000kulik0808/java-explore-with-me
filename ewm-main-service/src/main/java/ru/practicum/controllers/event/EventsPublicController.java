@@ -10,6 +10,8 @@ import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.services.event.EventService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
@@ -32,9 +34,11 @@ public class EventsPublicController {
                                                   @RequestParam(required = false) List<Long> categories,
                                                   @RequestParam(required = false) Boolean paid,
                                                   @RequestParam(required = false)
+                                                  @Past
                                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                                   LocalDateTime rangeStart,
                                                   @RequestParam(required = false)
+                                                  @FutureOrPresent
                                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                                   LocalDateTime rangeEnd,
                                                   @RequestParam(defaultValue = "false") Boolean onlyAvailable,
@@ -46,8 +50,8 @@ public class EventsPublicController {
                                                   HttpServletRequest request) {
         log.info("Запрос на получение всех событий с сокращенном виде.");
         return eventService.getAllPublic(text, categories, paid,
-                                         rangeStart, rangeEnd, onlyAvailable,
-                                         sortParam, from, size, request);
+                rangeStart, rangeEnd, onlyAvailable,
+                sortParam, from, size, request);
     }
 
     @GetMapping("/{eventId}")

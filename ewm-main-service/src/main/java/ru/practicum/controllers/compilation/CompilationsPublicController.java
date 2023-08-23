@@ -27,13 +27,13 @@ public class CompilationsPublicController {
                                                    @PositiveOrZero(message = FROM_ERROR_MESSAGE)
                                                    @RequestParam(defaultValue = "0") Integer from,
                                                    @Positive(message = SIZE_ERROR_MESSAGE)
-                                                   @RequestParam(defaultValue = "10") Integer size){
+                                                   @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получили запрос на получение всех подборок.");
         return compilationService.getAllCompilations(pinned, from, size);
     }
 
     @GetMapping("/{compId}")
-    public CompilationDto getOneCompilation(@PathVariable Long compId){
+    public CompilationDto getOneCompilation(@PathVariable Long compId) {
         log.info("Получили запрос на получение подпорки с id {}", compId);
         return compilationService.getOneCompilation(compId);
     }

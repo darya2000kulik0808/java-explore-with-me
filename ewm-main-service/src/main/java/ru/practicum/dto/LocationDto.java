@@ -1,4 +1,4 @@
-package ru.practicum.dto.user;
+package ru.practicum.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-    private Long id;
-    private String name;
-    private String email;
+public class LocationDto {
+    private Float lat; //Широта
+
+    private Float lon; //Долгота
 }

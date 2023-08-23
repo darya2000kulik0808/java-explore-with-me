@@ -22,7 +22,7 @@ public class CategoriesAdminController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto createNewCompilation(@Valid @RequestBody NewCategoryDto category){
+    public CategoryDto createNewCompilation(@Valid @RequestBody NewCategoryDto category) {
         log.info("Получили запрос на создание категории.");
         return categoryService.createNewCategory(category);
     }

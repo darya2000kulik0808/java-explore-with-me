@@ -27,13 +27,13 @@ public class CategoriesPublicController {
     public List<CategoryDto> getAllCategories(@PositiveOrZero(message = FROM_ERROR_MESSAGE)
                                               @RequestParam(defaultValue = "0") Integer from,
                                               @Positive(message = SIZE_ERROR_MESSAGE)
-                                              @RequestParam(defaultValue = "10") Integer size){
+                                              @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получили запрос на получение всех категорий.");
         return categoryService.getAllCategories(from, size);
     }
 
     @GetMapping("/{catId}")
-    public CategoryDto getOneCategory(@PathVariable Long catId){
+    public CategoryDto getOneCategory(@PathVariable Long catId) {
         log.info("Получили запрос на получение одной категории с id: {}.", catId);
         return categoryService.getOneCategory(catId);
     }

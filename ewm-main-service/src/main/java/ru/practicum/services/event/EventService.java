@@ -15,11 +15,11 @@ public interface EventService {
 
     EventFullDto getOneEventPublic(Long eventId, HttpServletRequest request);
 
-    List<EventFullDto> getByUserId(long userId, Integer from, Integer size);
+    List<EventFullDto> getByUserId(Long userId, Integer from, Integer size);
 
-    EventFullDto getUsersEventById(long userId, long eventId);
+    EventFullDto getUsersEventById(Long userId, Long eventId);
 
-    EventFullDto add(long userId, NewEventDto newEventDto);
+    EventFullDto add(Long userId, NewEventDto newEventDto);
 
-    EventFullDto update(long userId, long eventId, UpdateEventUserRequest updateEvent);
+    EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest updateEvent);
 }
