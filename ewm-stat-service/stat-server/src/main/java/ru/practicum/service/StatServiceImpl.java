@@ -3,8 +3,10 @@ package ru.practicum.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.ViewStatsDto;
+import ru.practicum.errorHandler.StartTimeAndEndTimeException;
 import ru.practicum.mapper.EndpointHitsMapper;
 import ru.practicum.model.EndpointHit;
 import ru.practicum.repository.StatsRepository;
@@ -31,6 +33,7 @@ public class StatServiceImpl implements StatService {
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Transactional
     public void postStat(EndpointHitDto hit) {
         log.info("Перешли к записи запроса к эндпоинту в БД...");
         EndpointHit hit1 = statsRepository.save(EndpointHitsMapper.toEndPointHit(hit));
@@ -38,11 +41,13 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ViewStatsDto> getStats(String start, String end,
                                        List<String> uris, Boolean unique) {
         log.info("Перешли к началу выборки статистики из БД...");
         LocalDateTime startTime = LocalDateTime.parse(URLDecoder.decode(start, StandardCharsets.UTF_8), formatter);
         LocalDateTime endTime = LocalDateTime.parse(URLDecoder.decode(end, StandardCharsets.UTF_8), formatter);
+        checkTime(startTime, endTime);
         List<ViewStatsDto> viewStats;
         if (!uris.isEmpty()) {
             log.info("Списк URI был передан.");
@@ -71,5 +76,17 @@ public class StatServiceImpl implements StatService {
                 .stream()
                 .sorted(Comparator.comparing(ViewStatsDto::getHits).reversed())
                 .collect(Collectors.toList());
+    }
+
+    private void checkTime(LocalDateTime start, LocalDateTime end) {
+        if (start.equals(end)) {
+            throw new StartTimeAndEndTimeException("Время начала не может совпадать с концом!");
+        }
+        if (start.isAfter(LocalDateTime.now())) {
+            throw new StartTimeAndEndTimeException("Время начала не может быть в будущем!");
+        }
+        if (start.isAfter(end)) {
+            throw new StartTimeAndEndTimeException("Время начала не может быть раньше конца!");
+        }
     }
 }
