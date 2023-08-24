@@ -6,7 +6,7 @@ import ru.practicum.models.Category;
 
 public class CategoryMapper {
 
-     public static Category toCategory(CategoryDto categoryDto) {
+    public static Category toCategory(CategoryDto categoryDto) {
         return Category.builder()
                 .id(categoryDto.getId())
                 .name(categoryDto.getName())

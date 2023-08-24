@@ -1,9 +1,12 @@
 package ru.practicum.mappers;
 
+import ru.practicum.dto.comment.CommentDto;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.dto.event.NewEventDto;
 import ru.practicum.models.Event;
+
+import java.util.List;
 
 public class EventMapper {
 
@@ -30,6 +33,7 @@ public class EventMapper {
                 .paid(event.getPaid())
                 .title(event.getTitle())
                 .views(event.getViews())
+                .comments(event.getComments())
                 .build();
     }
 
@@ -47,7 +51,10 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventFullDto toEventFullDto(Event event, int confirmedRequests, long views) {
+    public static EventFullDto toEventFullDto(Event event,
+                                              int confirmedRequests,
+                                              long views,
+                                              Integer comments) {
         return EventFullDto.builder()
                 .id(event.getId())
                 .annotation(event.getAnnotation())
@@ -65,6 +72,7 @@ public class EventMapper {
                 .title(event.getTitle())
                 .views((int) views)
                 .confirmedRequests(confirmedRequests)
+                .comments(comments)
                 .build();
     }
 }

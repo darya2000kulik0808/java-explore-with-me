@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import ru.practicum.errorHandler.exceptions.CommentPostDenyException;
 import ru.practicum.errorHandler.exceptions.ConflictException;
 import ru.practicum.errorHandler.exceptions.ObjectNotFoundException;
 import ru.practicum.errorHandler.exceptions.StartTimeAndEndTimeException;
@@ -102,6 +103,18 @@ public class ErrorHandler {
         return ApiError.builder()
                 .status(HttpStatus.CONFLICT)
                 .reason("Integrity constraint has been violated.")
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleCommentPostDenyException(final CommentPostDenyException e) {
+        log.error(e.getMessage(), e);
+        return ApiError.builder()
+                .status(HttpStatus.CONFLICT)
+                .reason("Конфликт при публикации комментария.")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
