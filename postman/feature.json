@@ -360,7 +360,7 @@
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
-							"pm.test(\"Test location fields\", function () {\r",
+							"pm.test(\"Test comment fields\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('id');\r",
 							"    pm.expect(jsonData).to.have.property('text');\r",
@@ -428,11 +428,11 @@
 							"    } catch(err) {\r",
 							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
 							"    }\r",
-							"    // pm.request.body.update({\r",
-							"    //     mode: 'raw',\r",
-							"    //     raw: JSON.stringify(rnd.getComment()),\r",
-							"    //     options: { raw: { language: 'json' } }\r",
-							"    // });\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(rnd.getComment()),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
 							"};\r",
 							"\r",
 							"const interval = setInterval(() => {}, 1000);\r",
@@ -464,7 +464,7 @@
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
-							"pm.test(\"Test location fields\", function () {\r",
+							"pm.test(\"Test comment fields\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('id');\r",
 							"    pm.expect(jsonData).to.have.property('text');\r",
@@ -569,7 +569,7 @@
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
-							"pm.test(\"Test location fields\", function () {\r",
+							"pm.test(\"Test comment fields\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('id');\r",
 							"    pm.expect(jsonData).to.have.property('text');\r",
@@ -759,7 +759,7 @@
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
-							"pm.test(\"Test location fields\", function () {\r",
+							"pm.test(\"Test comment fields\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('id');\r",
 							"    pm.expect(jsonData).to.have.property('text');\r",
@@ -798,40 +798,6 @@
 			"response": []
 		},
 		{
-			"name": "Delete comment for event by admin",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 204\", function () {\r",
-							"    pm.expect(pm.response.code).to.be.oneOf([204]);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/admin/events/{{eid}}/comments/{{commId}}",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"events",
-						"{{eid}}",
-						"comments",
-						"{{commId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Publish Comment",
 			"event": [
 				{
@@ -856,11 +822,11 @@
 							"    } catch(err) {\r",
 							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
 							"    }\r",
-							"    // pm.request.body.update({\r",
-							"    //     mode: 'raw',\r",
-							"    //     raw: JSON.stringify(rnd.getComment()),\r",
-							"    //     options: { raw: { language: 'json' } }\r",
-							"    // });\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(rnd.getComment()),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
 							"};\r",
 							"\r",
 							"const interval = setInterval(() => {}, 1000);\r",
@@ -892,7 +858,7 @@
 							"    pm.response.to.be.withBody;\r",
 							"    pm.response.to.be.json;\r",
 							"});\r",
-							"pm.test(\"Test location fields\", function () {\r",
+							"pm.test(\"Test comment fields\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('id');\r",
 							"    pm.expect(jsonData).to.have.property('text');\r",
@@ -931,6 +897,40 @@
 							"key": "actionAdmin",
 							"value": "PUBLISH_COMMENT"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete comment for event by admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([204]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/events/{{eid}}/comments/{{commId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"events",
+						"{{eid}}",
+						"comments",
+						"{{commId}}"
 					]
 				}
 			},
