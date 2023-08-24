@@ -1,5 +1,6 @@
 package ru.practicum.mappers;
 
+import ru.practicum.dto.event.EventForComment;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.dto.event.NewEventDto;
@@ -15,6 +16,13 @@ public class EventMapper {
                 .eventDate(event.getEventDate())
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                 .paid(event.getPaid())
+                .title(event.getTitle())
+                .build();
+    }
+
+    public static EventForComment toEventForComment(Event event) {
+        return EventForComment.builder()
+                .id(event.getId())
                 .title(event.getTitle())
                 .build();
     }

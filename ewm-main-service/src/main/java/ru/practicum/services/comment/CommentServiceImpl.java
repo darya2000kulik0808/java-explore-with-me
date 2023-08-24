@@ -75,9 +75,11 @@ public class CommentServiceImpl implements CommentService {
                     " без заявки на участие от пользователя с id=%d", eventId, userId));
         }
 
-        if (request.getStatus() != RequestStatusEnum.CONFIRMED) {
-            throw new CommentPostDenyException(String.format("Попытка добавить комментарий к событию с id=%d," +
-                    " без одобренной заявки на участие от пользователя с id=%d", eventId, userId));
+        if (event.getRequestModeration()) {
+            if (request != null && request.getStatus() != RequestStatusEnum.CONFIRMED) {
+                throw new CommentPostDenyException(String.format("Попытка добавить комментарий к событию с id=%d," +
+                        " без одобренной заявки на участие от пользователя с id=%d", eventId, userId));
+            }
         }
 
         Comment comment = CommentMapper.toComment(newCommentDto, user, event);
@@ -103,6 +105,7 @@ public class CommentServiceImpl implements CommentService {
 
         if (updateCommentDto.getText() != null) {
             comment.setText(updateCommentDto.getText());
+            comment.setStatus(CommentStatusEnum.PENDING);
         }
 
         return CommentMapper.toCommentFullDto(commentRepository.save(comment));
@@ -114,6 +117,10 @@ public class CommentServiceImpl implements CommentService {
         checkUser(userId);
         checkEvent(eventId);
         Comment comment = checkComment(commId);
+
+        if (comment.getStatus() != CommentStatusEnum.PUBLISHED) {
+            throw new ConflictException("Нельзя лайкнуть неопубликованный комментарий");
+        }
 
         Integer likes = comment.getLikes();
 
@@ -141,8 +148,11 @@ public class CommentServiceImpl implements CommentService {
         switch (actionAdminCommentEnum) {
             case REJECT_COMMENT:
                 comment.setStatus(CommentStatusEnum.REJECTED);
+                break;
             case PUBLISH_COMMENT:
-                comment.setStatus(CommentStatusEnum.PUBLISHED);
+                if (comment.getStatus() == CommentStatusEnum.PENDING) {
+                    comment.setStatus(CommentStatusEnum.PUBLISHED);
+                }
         }
         commentRepository.save(comment);
         return CommentMapper.toCommentFullDto(comment);

@@ -17,7 +17,7 @@ public class CommentMapper {
                 .id(comment.getId())
                 .text(comment.getText())
                 .author(UserMapper.toUserShortDto(comment.getAuthor()))
-                .event(EventMapper.toEventShortDto(comment.getEvent()))
+                .event(EventMapper.toEventForComment(comment.getEvent()))
                 .created(comment.getCreated())
                 .likes(comment.getLikes())
                 .status(comment.getStatus())
