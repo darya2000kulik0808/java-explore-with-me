@@ -56,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentDto> getAllForEvent(Long eventId) {
         checkEvent(eventId);
-        return  commentRepository.findAllByEvent_Id(eventId)
+        return commentRepository.findAllByEvent_Id(eventId)
                 .stream()
                 .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());

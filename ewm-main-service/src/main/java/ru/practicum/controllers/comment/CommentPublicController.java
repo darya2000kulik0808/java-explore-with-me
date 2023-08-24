@@ -22,7 +22,7 @@ public class CommentPublicController {
     private final CommentService commentService;
 
     @GetMapping
-    public List<CommentDto> getCommentsForEvent(@PathVariable Long eventId){
+    public List<CommentDto> getCommentsForEvent(@PathVariable Long eventId) {
         return commentService.getAllForEvent(eventId);
     }
 }

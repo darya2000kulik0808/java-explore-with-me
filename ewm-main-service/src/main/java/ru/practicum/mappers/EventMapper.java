@@ -1,12 +1,9 @@
 package ru.practicum.mappers;
 
-import ru.practicum.dto.comment.CommentDto;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.dto.event.NewEventDto;
 import ru.practicum.models.Event;
-
-import java.util.List;
 
 public class EventMapper {
 
