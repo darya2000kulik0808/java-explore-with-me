@@ -1,9 +1,7 @@
 package ru.practicum.controllers.comment;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.comment.CommentFullDto;
 import ru.practicum.services.comment.CommentService;
@@ -12,8 +10,6 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@Slf4j
-@Validated
 @RequestMapping(path = "/admin/events/{eventId}/comments")
 public class CommentAdminController {
 

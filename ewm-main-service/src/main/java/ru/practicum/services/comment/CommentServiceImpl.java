@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.comment.CommentDto;
 import ru.practicum.dto.comment.CommentFullDto;
 import ru.practicum.dto.comment.NewCommentDto;
-import ru.practicum.dto.comment.UpdateCommentDto;
 import ru.practicum.enums.CommentStatusEnum;
 import ru.practicum.enums.RequestStatusEnum;
 import ru.practicum.enums.StateActionAdminCommentEnum;
@@ -89,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentFullDto editComment(Long userId, Long eventId, Long commId, UpdateCommentDto updateCommentDto) {
+    public CommentFullDto editComment(Long userId, Long eventId, Long commId, NewCommentDto newCommentDto) {
         checkUser(userId);
         checkEvent(eventId);
         Comment comment = checkComment(commId);
@@ -103,10 +102,8 @@ public class CommentServiceImpl implements CommentService {
                     " от пользователя с id=%d, который не является автором комментария.", userId));
         }
 
-        if (updateCommentDto.getText() != null) {
-            comment.setText(updateCommentDto.getText());
-            comment.setStatus(CommentStatusEnum.PENDING);
-        }
+        comment.setText(newCommentDto.getText());
+        comment.setStatus(CommentStatusEnum.PENDING);
 
         return CommentMapper.toCommentFullDto(commentRepository.save(comment));
     }
