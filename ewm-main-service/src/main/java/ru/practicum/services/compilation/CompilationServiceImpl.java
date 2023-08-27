@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.compilation.CompilationDto;
 import ru.practicum.dto.compilation.NewCompilationDto;
 import ru.practicum.dto.compilation.UpdateCompilationRequest;
+import ru.practicum.enums.CommentStatusEnum;
 import ru.practicum.enums.RequestStatusEnum;
 import ru.practicum.errorHandler.exceptions.ConflictException;
 import ru.practicum.errorHandler.exceptions.ObjectNotFoundException;
 import ru.practicum.mappers.CompilationMapper;
 import ru.practicum.models.Compilation;
 import ru.practicum.models.Event;
+import ru.practicum.repositories.CommentRepository;
 import ru.practicum.repositories.CompilationRepository;
 import ru.practicum.repositories.EventRepository;
 import ru.practicum.repositories.RequestRepository;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
+    private final CommentRepository commentRepository;
 
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
@@ -51,10 +54,22 @@ public class CompilationServiceImpl implements CompilationService {
         List<CompilationDto> compilationDtos = compilationsFromDb.stream()
                 .map(CompilationMapper::toCompilationDto)
                 .collect(Collectors.toList());
+
         compilationDtos.forEach(
                 compilationDto -> compilationDto.getEvents().forEach(
                         eventShortDto -> eventShortDto.setConfirmedRequests(
-                                countConfirmedForEventShortDto(eventShortDto.getId()))));
+                                countConfirmedForEventShortDto(eventShortDto.getId())
+                        )
+                )
+        );
+
+        compilationDtos.forEach(
+                compilationDto -> compilationDto.getEvents().forEach(
+                        eventShortDto -> eventShortDto.setComments(
+                                countCommentsForShortDto(eventShortDto.getId())
+                        )
+                )
+        );
         return compilationDtos;
     }
 
@@ -70,7 +85,8 @@ public class CompilationServiceImpl implements CompilationService {
 
         compilationDtos.getEvents().forEach(eventShortDto -> eventShortDto.setConfirmedRequests(
                 countConfirmedForEventShortDto(eventShortDto.getId())));
-
+        compilationDtos.getEvents().forEach(eventShortDto -> eventShortDto.setComments(
+                countCommentsForShortDto(eventShortDto.getId())));
         return compilationDtos;
     }
 
@@ -149,5 +165,9 @@ public class CompilationServiceImpl implements CompilationService {
 
     private Integer countConfirmedForEventShortDto(Long eventId) {
         return requestRepository.countAllByStatusAndEvent_Id(RequestStatusEnum.CONFIRMED, eventId);
+    }
+
+    private Integer countCommentsForShortDto(Long eventId) {
+        return commentRepository.countAllByEvent_IdAndStatus(eventId, CommentStatusEnum.PUBLISHED);
     }
 }

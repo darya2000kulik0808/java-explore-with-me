@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.EndpointHitDto;
-import ru.practicum.StatClient;
 import ru.practicum.ViewStatsDto;
 import ru.practicum.dto.event.*;
 import ru.practicum.enums.*;
@@ -39,8 +37,6 @@ public class EventServiceImpl implements EventService {
     private static final String URI = "/events";
     private static final String APP = "ewm-main-service";
 
-    private final StatClient client;
-
     private final EntityManager entityManager;
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;
@@ -48,6 +44,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -198,7 +195,8 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        addEndpointHit(URI, request);
+        statsRequestService.addEndpointHit(URI, APP, request);
+
         return eventFullDtos.stream()
                 .map(EventMapper::toEventShortDto)
                 .collect(Collectors.toList());
@@ -218,7 +216,7 @@ public class EventServiceImpl implements EventService {
         }
 
         String uri = URI + "/" + eventId;
-        addEndpointHit(uri, request);
+        statsRequestService.addEndpointHit(uri, APP, request);
 
         EventFullDto eventFullDto = makeFullResponseDto(event);
         eventFullDto.setConfirmedRequests(countConfirmedForEventDtos(eventId));
@@ -391,23 +389,6 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private void addEndpointHit(String uri, HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
-                .app(APP)
-                .ip(ip)
-                .uri(uri)
-                .timestamp(LocalDateTime.now())
-                .build();
-        try {
-            client.addEndpointHit(endpointHitDto);
-        } catch (StatsRequestException e) {
-            throw new StatsRequestException(
-                    String.format("Ошибка добавления просмотра страницы %s пользователем %s: ", uri, ip)
-                            + e.getMessage());
-        }
-    }
-
     private Category checkCategory(Long catId) {
         return categoryRepository.findById(catId)
                 .orElseThrow(() -> new ObjectNotFoundException(
@@ -435,7 +416,13 @@ public class EventServiceImpl implements EventService {
             views = viewStatsDto.isEmpty() ? 0 : viewStatsDto.get(0).getHits();
         }
 
-        return EventMapper.toEventFullDto(event, confirmedRequests, views);
+        Integer comments = getCommentsCount(event.getId());
+
+        return EventMapper.toEventFullDto(event, confirmedRequests, views, comments);
+    }
+
+    public Integer getCommentsCount(Long eventId) {
+        return commentRepository.countAllByEvent_IdAndStatus(eventId, CommentStatusEnum.PUBLISHED);
     }
 
     public static long getEventId(ViewStatsDto viewStatsDto) {
